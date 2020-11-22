@@ -1,27 +1,50 @@
+"
+   " ▄   ▄███▄   ████▄     ▄   ▄█ █▀▄▀█
+    " █  █▀   ▀  █   █      █  ██ █ █ █
+" ██   █ ██▄▄    █   █ █     █ ██ █ ▄ █
+" █ █  █ █▄   ▄▀ ▀████  █    █ ▐█ █   █
+" █  █ █ ▀███▀           █  █   ▐    █
+" █   ██                  █▐        ▀
+                        " ▐
+
 let mapleader =","
 
-if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim"'))
-	echo "Downloading junegunn/vim-plug to manage plugins..."
-	silent !mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/
-	silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim
-	autocmd VimEnter * PlugInstall
-endif
+" if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim"'))
+" 	echo "Downloading junegunn/vim-plug to manage plugins..."
+" 	silent !mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/
+" 	silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim
+" 	autocmd VimEnter * PlugInstall
+" endif
 
-call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"'))
-Plug 'tpope/vim-surround'
-Plug 'preservim/nerdtree'
-Plug 'junegunn/goyo.vim'
-Plug 'PotatoesMaster/i3-vim-syntax'
-Plug 'jreybert/vimagit'
-Plug 'lukesmithxyz/vimling'
-Plug 'vimwiki/vimwiki'
-Plug 'bling/vim-airline'
-Plug 'tpope/vim-commentary'
-Plug 'kovetskiy/sxhkd-vim'
-Plug 'ap/vim-css-color'
-call plug#end()
+" Always source these:
+source $HOME/.config/nvim/keys/mappings.vim
+source $HOME/.config/nvim/general/settings.vim
+source $HOME/.config/nvim/plug-config/coc.vim
+source $HOME/.config/nvim/plug-config/fzf.vim
+source $HOME/.config/nvim/plug-config/lightline.vim
+source $HOME/.config/nvim/vim-plug/plugins.vim
+source $HOME/.config/nvim/themes/onedark.vim
 
-set bg=light
+
+
+"call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"'))
+"Plug 'tpope/vim-surround'
+"Plug 'preservim/nerdtree'
+"Plug 'junegunn/goyo.vim'
+""Plug 'PotatoesMaster/i3-vim-syntax'
+"Plug 'jreybert/vimagit'
+""Plug 'lukesmithxyz/vimling'
+"Plug 'vimwiki/vimwiki'
+""Plug 'bling/vim-airline'
+"Plug 'itchyny/lightline.vim'
+"Plug 'tpope/vim-commentary'
+"Plug 'kovetskiy/sxhkd-vim'
+"Plug 'ap/vim-css-color'
+"Plug 'morhetz/gruvbox'
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"call plug#end()
+
+set bg=dark
 set go=a
 set mouse=a
 set nohlsearch
@@ -29,11 +52,22 @@ set clipboard+=unnamedplus
 
 " Some basics:
 	nnoremap c "_c
-	set nocompatible
+	"nnoremap W :w!<CR>
+    set nocompatible
 	filetype plugin on
 	syntax on
+	set hlsearch
+	set incsearch
 	set encoding=utf-8
 	set number relativenumber
+" Set 'tab' as 4 spaces:
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+"converts tab to spaces:
+set expandtab
+set autoindent
+set fileformat=unix
 " Enable autocompletion:
 	set wildmode=longest,list,full
 " Disables automatic commenting on newline:
@@ -58,39 +92,39 @@ set clipboard+=unnamedplus
     endif
 
 " vimling:
-	nm <leader>d :call ToggleDeadKeys()<CR>
-	imap <leader>d <esc>:call ToggleDeadKeys()<CR>a
-	nm <leader>i :call ToggleIPA()<CR>
-	imap <leader>i <esc>:call ToggleIPA()<CR>a
-	nm <leader>q :call ToggleProse()<CR>
+	" nm <leader>d :call ToggleDeadKeys()<CR>
+	" imap <leader>d <esc>:call ToggleDeadKeys()<CR>a
+	" nm <leader>i :call ToggleIPA()<CR>
+	" imap <leader>i <esc>:call ToggleIPA()<CR>a
+	" nm <leader>q :call ToggleProse()<CR>
 
 " Shortcutting split navigation, saving a keypress:
-	map <C-h> <C-w>h
-	map <C-j> <C-w>j
-	map <C-k> <C-w>k
-	map <C-l> <C-w>l
+    map <C-h> <C-w>h
+    map <C-j> <C-w>j
+    map <C-k> <C-w>k
+    map <C-l> <C-w>l
 
 " Replace ex mode with gq
-	map Q gq
+    map Q gq
 
 " Check file in shellcheck:
-	map <leader>s :!clear && shellcheck %<CR>
+    map <leader>s :!clear && shellcheck %<CR>
 
 " Open my bibliography file in split
-	map <leader>b :vsp<space>$BIB<CR>
-	map <leader>r :vsp<space>$REFER<CR>
+    map <leader>b :vsp<space>$BIB<CR> map <leader>r :vsp<space>$REFER<CR>
 
 " Replace all is aliased to S.
-	nnoremap S :%s//g<Left><Left>
+    nnoremap S :%s//g<Left><Left>
 
 " Compile document, be it groff/LaTeX/markdown/etc.
-	map <leader>c :w! \| !compiler <c-r>%<CR>
+    map <leader>c :w! \| !compiler <c-r>%<CR>
 
 " Open corresponding .pdf/.html or preview
-	map <leader>p :!opout <c-r>%<CR><CR>
+    map <leader>p :!opout <c-r>%<CR><CR>
 
-" Runs a script that cleans out tex build files whenever I close out of a .tex file.
-	autocmd VimLeave *.tex !texclear %
+" Runs a script that cleans out tex build files whenever I close out of a .tex
+" file.
+    autocmd VimLeave *.tex !texclear %
 
 " Ensure files are read as what I want:
 	let g:vimwiki_ext2syntax = {'.Rmd': 'markdown', '.rmd': 'markdown','.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
@@ -101,7 +135,7 @@ set clipboard+=unnamedplus
 	autocmd BufRead,BufNewFile *.tex set filetype=tex
 
 " Save file as sudo on files that require root permission
-	cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
+"    cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
 
 " Enable Goyo by default for mutt writing
 	autocmd BufRead,BufNewFile /tmp/neomutt* let g:goyo_width=80
@@ -109,18 +143,24 @@ set clipboard+=unnamedplus
 	autocmd BufRead,BufNewFile /tmp/neomutt* map ZZ :Goyo\|x!<CR>
 	autocmd BufRead,BufNewFile /tmp/neomutt* map ZQ :Goyo\|q!<CR>
 
-" Automatically deletes all trailing whitespace and newlines at end of file on save.
-	autocmd BufWritePre * %s/\s\+$//e
-	autocmd BufWritepre * %s/\n\+\%$//e
+" Automatically deletes all trailing whitespace and newlines at end of file on
+" save.
+    autocmd BufWritePre * %s/\s\+$//e
+    autocmd BufWritePre * %s/\n\+\%$//e
 
-" When shortcut files are updated, renew bash and ranger configs with new material:
-	autocmd BufWritePost files,directories !shortcuts
+" When shortcut files are updated, renew bash and ranger configs with new
+" material:
+    autocmd BufWritePost files,directories !shortcuts
 " Run xrdb whenever Xdefaults or Xresources are updated.
-	autocmd BufWritePost *Xresources,*Xdefaults !xrdb %
+    autocmd BufWritePost *Xresources,*Xdefaults !xrdb %
 " Update binds when sxhkdrc is updated.
-	autocmd BufWritePost *sxhkdrc !pkill -USR1 sxhkd
+    autocmd BufWritePost *sxhkdrc !pkill -USR1 sxhkd
+" Auto update dwmblocks config.
+    autocmd BufWritePost ~/.local/src/dwmblocks/config.h !cd ~/.local/src/dwmblocks/; sudo make install && { killall -q dwmblocks;setsid dwmblocks & }
 
-" Turns off highlighting on the bits of code that are changed, so the line that is changed is highlighted but the actual text that has changed stands out on the line and is readable.
+" Turns off highlighting on the bits of code that are changed, so the line
+" that is changed is highlighted but the actual text that has changed stands
+" out on the line and is readable.
 if &diff
     highlight! link DiffText MatchParen
 endif
